@@ -1,0 +1,11 @@
+{
+  "title": "設定",
+  "language": "偏好語言",
+  "languageSelect": "選擇語言",
+  "en": "英文",
+  "zh": "繁體中文",
+  "meta": {
+    "title": "設定頁面",
+    "description": "設置頁面"
+  }
+}
