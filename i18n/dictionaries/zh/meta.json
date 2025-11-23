@@ -3,5 +3,15 @@
     "title": "平台",
     "description": "在線賭博平台",
     "keywords": "遊戲, 博弈, 娛樂, 線上賭場"
+  },
+  "tenant-a": {
+    "title": "A 租戶娛樂城",
+    "description": "頂級體育博彩與彩票平台，提供精彩遊戲與豐富獎勵",
+    "keywords": "體育博彩, 彩票, 線上遊戲, A租戶"
+  },
+  "tenant-b": {
+    "title": "B 租戶賭場",
+    "description": "極致線上賭場體驗，包含老虎機、捕魚遊戲與真人荷官",
+    "keywords": "線上賭場, 老虎機, 捕魚遊戲, 真人賭場, B租戶"
   }
 }

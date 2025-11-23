@@ -2,9 +2,9 @@ export default {
   tenantId: 'tenant-a',
   tenantName: 'A 租戶',
   meta: {
-    titleKey: 'root.title',
-    descriptionKey: 'root.description',
-    keywordsKey: 'root.keywords'
+    titleKey: 'tenant-a.title',
+    descriptionKey: 'tenant-a.description',
+    keywordsKey: 'tenant-a.keywords'
   },
   theme: 'dark-blue',
   games: ['sport', 'lottery'],

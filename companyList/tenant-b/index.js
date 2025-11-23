@@ -2,9 +2,9 @@ export default {
   tenantId: 'tenant-b',
   tenantName: 'B TENANT',
   meta: {
-    titleKey: 'root.title',
-    descriptionKey: 'root.description',
-    keywordsKey: 'root.keywords'
+    titleKey: 'tenant-b.title',
+    descriptionKey: 'tenant-b.description',
+    keywordsKey: 'tenant-b.keywords'
   },
   theme: 'purple',
   games: ['electron', 'fish', 'live'],
