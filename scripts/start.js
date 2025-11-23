@@ -3,16 +3,26 @@ const { spawn } = require('child_process')
 const path = require('path')
 const fs = require('fs')
 
-// Cleared .next cache
-const nextDir = path.join(__dirname, '../.next')
-if (fs.existsSync(nextDir)) {
-  fs.rmSync(nextDir, { recursive: true, force: true })
-  console.log('✅ Cleared .next cache')
-}
-
 // Set TENANT
 const tenant = process.env.TENANT || process.argv[2] || 'tenant-dev'
 process.env.TENANT = process.env.TENANT || tenant
+
+// Check if tenant changed - only clear cache if different
+const lastTenantFile = path.join(__dirname, '../.last-tenant')
+const lastTenant = fs.existsSync(lastTenantFile)
+  ? fs.readFileSync(lastTenantFile, 'utf-8').trim()
+  : null
+
+if (lastTenant !== tenant) {
+  const nextDir = path.join(__dirname, '../.next')
+  if (fs.existsSync(nextDir)) {
+    fs.rmSync(nextDir, { recursive: true, force: true })
+    console.log('✅ Cleared .next cache (tenant changed)')
+  }
+  fs.writeFileSync(lastTenantFile, tenant)
+} else {
+  console.log(`✅ Using cached build for ${tenant}`)
+}
 
 // Update tsconfig.json
 const tsconfig = require('../tsconfig.json')
