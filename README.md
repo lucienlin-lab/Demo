@@ -8,6 +8,7 @@ internationalization (i18n), and SEO optimization.
 - [Get Start](#-getting-started)
 - [Tech Stack](#️-tech-stack)
 - [Project Structure](#-project-structure)
+- [Architecture Notes](#-architecture-notes)
 - [How to Add a New Tenant](#-how-to-add-a-new-tenant)
 
 ## 🚀 Getting Started
@@ -92,28 +93,33 @@ Available Routes
 ```tree
 root/
 ├── app/
-│ └── [lang]/ # Dynamic language routing
-│ ├── (pages)/ # Route group for pages
-│ │ ├── profile/
-│ │ ├── member/
-│ │ ├── wallet/
-│ │ └── settings/ # Settings page with language switcher
-│ ├── layout.tsx # Root layout with metadata generation
-│ ├── page.tsx
-│ └── globals.css
+│ ├── [lang]/ # Dynamic language routing
+│ │ ├── (pages)/ # Route group for pages
+│ │ │ ├── profile/
+│ │ │ ├── member/
+│ │ │ ├── wallet/
+│ │ │ └── settings/ # Settings page with language switcher
+│ │ ├── layout.tsx # Root layout with metadata generation
+│ │ ├── page.tsx
+│ │ └── globals.css
+│ └── icon.svg # Favicon (auto-copied per tenant)
 │
 ├── companyList/ # Multi-tenant configurations
 │ ├── tenant-dev/
 │ │ ├── index.js # Tenant config
 │ │ └── assets/ # Tenant-specific assets
+│ │ ├── banner.webp
+│ │ ├── logo.svg
+│ │ └── favicon.svg
 │ ├── tenant-a/
 │ └── tenant-b/
 │
 ├── components/
 │ ├── ui/ # Shadcn UI components
 │ ├── Header.tsx
+│ ├── Logo.tsx # Tenant logo component
 │ ├── Navbar.tsx
-│ └── Navigation.tsx # Main navigation menu
+│ └── Navigation.tsx # next-intl navigation exports
 │
 ├── i18n/
 │ ├── dictionaries/ # Translation files
@@ -125,12 +131,44 @@ root/
 ├── hooks/ # Custom React hooks
 ├── lib/ # Utility functions
 ├── scripts/
-│ └── start.js # Development script with tenant setup
+│ ├── start.js # Development script with tenant setup
+│ └── build.js # Production build script
 │
 ├── proxy.ts # next-intl middleware
 ├── next.config.ts
 └── tsconfig.json
 ```
+
+## 📐 Architecture Notes
+
+### Multi-Tenant Approach
+
+This project uses a **config-based** multi-tenant approach rather than subdomain-based detection. Each tenant is identified at build/start time via command-line argument or environment variable.
+
+**How it works:**
+
+1. Run `npm run dev tenant-a` or `npm run build tenant-a`
+2. The script updates `tsconfig.json` paths to point to the tenant's config and assets
+3. Tenant-specific favicon is copied to `app/icon.svg`
+4. Next.js builds/serves with the tenant's configuration
+
+**Why this approach?**
+
+- Simpler deployment (no DNS/subdomain setup required)
+- Each tenant can be deployed as a separate instance
+- Clear separation of tenant configurations
+- Easier to manage in development
+
+**Trade-offs:**
+
+- Cannot switch tenants at runtime without restart
+- Each tenant requires a separate build for production
+
+### SEO Implementation
+
+- Each tenant has its own i18n meta namespace (`tenant-a.title`, `tenant-b.title`, etc.)
+- OpenGraph tags are automatically generated from tenant's meta configuration
+- Server-side rendering ensures search engine crawlability
 
 ## How to Add a New Tenant
 
@@ -151,6 +189,9 @@ Create companyList/tenant-new/index.js:
 //index.js
 
 export default {
+  tenantId: 'tenant-new',
+  tenantName: 'New Tenant',
+
   // Choose theme: 'default' | 'dark-blue' | 'purple'
   theme: 'default',
 
@@ -164,21 +205,38 @@ export default {
     wallet: true
   },
 
-  // SEO metadata
+  // SEO metadata (using i18n keys)
   meta: {
-    title: 'New Tenant - Gaming Platform',
-    description: 'Your custom description here',
-    keywords: 'gaming, entertainment'
+    titleKey: 'tenant-new.title',
+    descriptionKey: 'tenant-new.description',
+    keywordsKey: 'tenant-new.keywords'
   }
 }
 ```
 
-**Step 3: Add Tenant Assets (Optional)**
+**Step 2.1: Add i18n Meta (Required)**
+Add tenant meta to `i18n/dictionaries/en/meta.json` and `zh/meta.json`:
+
+```json
+{
+  "tenant-new": {
+    "title": "New Tenant Gaming",
+    "description": "Your custom description here",
+    "keywords": "gaming, entertainment"
+  }
+}
+```
+
+**Step 3: Add Tenant Assets**
 
 ```bash
-# Add tenant-specific banner image
-cp your-banner.jpg companyList/tenant-new/assets/banner.jpg
+# Add tenant-specific images
+cp your-banner.webp companyList/tenant-new/assets/banner.webp
+cp your-logo.svg companyList/tenant-new/assets/logo.svg
+cp your-favicon.svg companyList/tenant-new/assets/favicon.svg
 ```
+
+> **Note:** `logo.svg` and `favicon.svg` are required. You can copy from existing tenants as a starting point.
 
 **Step 4: Test the New Tenant**
 
