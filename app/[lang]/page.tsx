@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Avatar from '@/components/Avatar'
+import Logo from '@/components/Logo'
 import Navbar from '@/components/Navbar'
 import banner from '@assets/banner.webp'
 import tenantConfig from '@tenant-config'
@@ -12,13 +13,12 @@ export default function Home() {
   return (
     <div className="flex size-full flex-col">
       <div className="overflow-auto py-10 sm:px-6 lg:px-12">
-        <header className="relative flex h-14 items-center justify-between">
-          <div className="pointer-events-none absolute w-full text-center text-3xl font-semibold text-white">
+        <header className="relative mx-4 flex h-14 items-center justify-between sm:mx-0">
+          <Logo />
+          <div className="pointer-events-none absolute hidden w-full text-center text-3xl font-semibold text-white sm:block">
             {t('title')}
           </div>
-          <div className="mr-4 ml-auto sm:mr-0">
-            <Avatar />
-          </div>
+          <Avatar />
         </header>
         <main className="mt-10 px-4">
           <div className="space-y-5">
