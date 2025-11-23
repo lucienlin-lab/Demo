@@ -25,6 +25,17 @@ require('fs').writeFileSync(
   JSON.stringify(tsconfig, null, 2)
 )
 
+// Copy tenant favicon to app/icon.svg
+const faviconSrc = path.join(
+  __dirname,
+  `../companyList/${tenant}/assets/favicon.svg`
+)
+const faviconDest = path.join(__dirname, '../app/icon.svg')
+if (fs.existsSync(faviconSrc)) {
+  fs.copyFileSync(faviconSrc, faviconDest)
+  console.log('✅ Copied tenant favicon')
+}
+
 const nextDev = spawn('next', ['dev', '--webpack'], {
   stdio: 'inherit', // 繼承父進程的輸入輸出
   shell: true
