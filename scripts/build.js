@@ -14,12 +14,17 @@ if (!fs.existsSync(tenantDir)) {
   process.exit(1)
 }
 
-// Clear .next cache
+// Clear .next cache (always clear for build)
 const nextDir = path.join(__dirname, '../.next')
 if (fs.existsSync(nextDir)) {
   fs.rmSync(nextDir, { recursive: true, force: true })
   console.log('✅ Cleared .next cache')
 }
+
+// Update .last-tenant for start script consistency
+const lastTenantFile = path.join(__dirname, '../.last-tenant')
+fs.writeFileSync(lastTenantFile, tenant)
+console.log('✅ Updated .last-tenant')
 
 // Update tsconfig.json
 const tsconfigPath = path.join(__dirname, '../tsconfig.json')
