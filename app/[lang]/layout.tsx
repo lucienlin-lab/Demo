@@ -28,13 +28,23 @@ export async function generateMetadata({
   const descriptionKey = tenantConfig.meta.descriptionKey || 'root.description'
   const keywordsKey = tenantConfig.meta.keywordsKey || 'root.keywords'
 
+  const title = t(titleKey)
+  const description = t(descriptionKey)
+
   return {
     title: {
-      default: t(titleKey),
-      template: `%s | ${t(titleKey)}`
+      default: title,
+      template: `%s | ${title}`
     },
-    description: t(descriptionKey),
-    keywords: t(keywordsKey)
+    description: description,
+    keywords: t(keywordsKey),
+    openGraph: {
+      title: title,
+      description: description,
+      type: 'website',
+      locale: lang === 'zh' ? 'zh_TW' : 'en_US',
+      siteName: title
+    }
   }
 }
 
