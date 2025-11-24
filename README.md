@@ -5,7 +5,7 @@ internationalization (i18n), and SEO optimization.
 
 ## Index
 
-- [Get Start](#-getting-started)
+- [Get Started](#-getting-started)
 - [Tech Stack](#️-tech-stack)
 - [Project Structure](#-project-structure)
 - [Architecture Notes](#-architecture-notes)
@@ -53,7 +53,7 @@ npm run dev tenant-b
 npm run build tenant-a
 ```
 
-Available Routes
+#### Available Routes
 
 - `/`, `/en` or `/zh` - Home page
 - `/profile` - Profile page
@@ -82,8 +82,6 @@ Available Routes
 - Modular dictionary structure for easy maintenance & extended
 
 ### Development Tools
-
-<!-- - **Vitest** - Fast unit testing framework -->
 
 - **ESLint** - Code linting and quality checks
 - **Prettier** - Code formatting
@@ -170,7 +168,7 @@ This project uses a **config-based** multi-tenant approach rather than subdomain
 - OpenGraph tags are automatically generated from tenant's meta configuration
 - Server-side rendering ensures search engine crawlability
 
-## How to Add a New Tenant
+## ➕ How to Add a New Tenant
 
 **Step 1: Create Tenant Directory**
 
